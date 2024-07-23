@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Modules\ModuleSLEController.cs" />
     <Compile Include="Modules\ModuleSLEAnimate.cs" />
+    <Compile Include="Modules\ModuleSLESequentialAnimate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -21,7 +21,11 @@ namespace StarshipLaunchExpansion.Modules
         private bool StartupValue = true;
         private float CalcValue;
 
-        private string AnimationState;
+        public string AnimationState
+        {
+            get;
+            private set;
+        }
 
         private float CurrentAnimateSpeed;
 
@@ -280,7 +284,7 @@ namespace StarshipLaunchExpansion.Modules
                     AnimateRetract();
                     StartMoveExtensionLimit = ExtensionLimit;
                 }
-                else if (AnimatePosition * MaxExtension >= ExtensionLimit * AnimateAnim[AnimationName].length && AnimationState == "Extending")
+                else if (AnimatePosition * MaxExtension >= ExtensionLimit * AnimateAnim[AnimationName].length - AllowedErrorDelta * MaxExtension && AnimationState == "Extending")
                 {
                     if (ExtensionLimit >= StartMoveExtensionLimit)
                     {
@@ -288,7 +292,7 @@ namespace StarshipLaunchExpansion.Modules
                     }
                     AnimateStop();
                 }
-                else if (AnimatePosition * MaxExtension <= ExtensionLimit * AnimateAnim[AnimationName].length && AnimationState == "Retracting")
+                else if (AnimatePosition * MaxExtension <= ExtensionLimit * AnimateAnim[AnimationName].length + AllowedErrorDelta * MaxExtension && AnimationState == "Retracting")
                 {
                     if (ExtensionLimit <= StartMoveExtensionLimit)
                     {
@@ -309,7 +313,7 @@ namespace StarshipLaunchExpansion.Modules
                 {
                     AnimateRetract();
                 }
-                else if (AnimatePosition * 100 >= ExtensionLimit * AnimateAnim[AnimationName].length && AnimationState == "Extending")
+                else if (AnimatePosition * 100 >= ExtensionLimit * AnimateAnim[AnimationName].length - AllowedErrorDelta * 100 && AnimationState == "Extending")
                 {
                     if (ExtensionLimit >= StartMoveExtensionLimit)
                     {
@@ -317,7 +321,7 @@ namespace StarshipLaunchExpansion.Modules
                     }
                     AnimateStop();
                 }
-                else if (AnimatePosition * 100 <= ExtensionLimit * AnimateAnim[AnimationName].length && AnimationState == "Retracting")
+                else if (AnimatePosition * 100 <= ExtensionLimit * AnimateAnim[AnimationName].length + AllowedErrorDelta * 100 && AnimationState == "Retracting")
                 {
                     if (ExtensionLimit <= StartMoveExtensionLimit)
                     {
