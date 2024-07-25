@@ -64,22 +64,25 @@ namespace StarshipLaunchExpansion.Modules
         [KSPField]
         public bool ShowGUI = true;
 
-		[KSPField]
-		public bool ShowButtons = false;
+        [KSPField]
+        public bool ShowButtons = false;
 
-		[KSPField]
+        [KSPField]
         public bool ShowSpeedSlider = true;
+
+        [KSPField]
+        public bool ShowExtensionSlider = true;
 
         [KSPField]
         public string AnimStopName = "AnimStopName";
 
-		[KSPField]
-		public string AnimRetractName = "AnimRetractName";
+        [KSPField]
+        public string AnimRetractName = "AnimRetractName";
 
-		[KSPField]
-		public string AnimExtendName = "AnimExtendName";
+        [KSPField]
+        public string AnimExtendName = "AnimExtendName";
 
-		[KSPField]
+        [KSPField]
         public string ExtensionLimitName = "ExtensionLimitName";
 
         [KSPField]
@@ -96,7 +99,7 @@ namespace StarshipLaunchExpansion.Modules
 
         //Ingame UI stuffz
 
-        [KSPField(guiActive = true, guiActiveEditor = false, guiFormat = "F2", guiName = "ExtendedCurrentName", guiUnits = "%")]
+        [KSPField(guiActive = true, guiActiveEditor = true, guiFormat = "F2", guiName = "ExtendedCurrentName", guiUnits = "%")]
         public float ExtendedCurrent;
 
         [KSPAxisField(axisMode = KSPAxisMode.Incremental, guiActive = true, guiActiveUnfocused = false, guiFormat = "0", guiName = "ExtensionLimitName", guiUnits = "%", incrementalSpeed = 50f, isPersistant = true, maxValue = 100f, minValue = -100f, unfocusedRange = 25f)]
@@ -121,19 +124,19 @@ namespace StarshipLaunchExpansion.Modules
             }
         }
 
-		[KSPEvent(guiActive = false, guiActiveEditor = false, guiActiveUnfocused = false, guiName = "AnimRetractName")]
+        [KSPEvent(guiActive = false, guiActiveEditor = false, guiActiveUnfocused = false, guiName = "AnimRetractName")]
         public void Button2()
         {
             ExtensionLimit = 0;
         }
 
-		[KSPEvent(guiActive = false, guiActiveEditor = false, guiActiveUnfocused = false, guiName = "AnimExtendName")]
+        [KSPEvent(guiActive = false, guiActiveEditor = false, guiActiveUnfocused = false, guiName = "AnimExtendName")]
         public void Button3()
         {
             ExtensionLimit = MaxExtension;
         }
 
-		[KSPAction(guiName = "AnimStopName")]
+        [KSPAction(guiName = "AnimStopName")]
         public void Action1(KSPActionParam param)
         {
             if (ConvertUnits && AnimationState != "Stopped")
@@ -148,20 +151,20 @@ namespace StarshipLaunchExpansion.Modules
             }
         }
 
-		[KSPAction(activeEditor = false, guiName = "AnimRetractName")]
+        [KSPAction(activeEditor = false, guiName = "AnimRetractName")]
         public void Action2(KSPActionParam param)
         {
             ExtensionLimit = 0;
         }
 
-		[KSPAction(activeEditor = false, guiName = "AnimExtendName")]
-		public void Action3(KSPActionParam param)
-		{
-			ExtensionLimit = MaxExtension;
-		}
+        [KSPAction(activeEditor = false, guiName = "AnimExtendName")]
+        public void Action3(KSPActionParam param)
+        {
+            ExtensionLimit = MaxExtension;
+        }
 
-		//Voids
-		public void Start()
+        //Voids
+        public void Start()
         {
             AnimateAnim = part.FindModelAnimator(AnimationName);
             if (AnimateAnim == null)
@@ -397,21 +400,21 @@ namespace StarshipLaunchExpansion.Modules
             }
             else if (Events["Button2"].guiActive && ExtensionLimit == 0)
             {
-				Events["Button2"].guiActive = false;
-				Events["Button2"].guiActiveEditor = false;
-			}
+                Events["Button2"].guiActive = false;
+                Events["Button2"].guiActiveEditor = false;
+            }
 
-			if (!Events["Button3"].guiActive && ExtensionLimit != MaxExtension && ShowGUI && ShowButtons)
-			{
-				Events["Button3"].guiActive = true;
-				Events["Button3"].guiActiveEditor = true;
-			}
-			else if (Events["Button3"].guiActive && ExtensionLimit == MaxExtension)
-			{
-				Events["Button3"].guiActive = false;
-				Events["Button3"].guiActiveEditor = false;
-			}
-		}
+            if (!Events["Button3"].guiActive && ExtensionLimit != MaxExtension && ShowGUI && ShowButtons)
+            {
+                Events["Button3"].guiActive = true;
+                Events["Button3"].guiActiveEditor = true;
+            }
+            else if (Events["Button3"].guiActive && ExtensionLimit == MaxExtension)
+            {
+                Events["Button3"].guiActive = false;
+                Events["Button3"].guiActiveEditor = false;
+            }
+        }
 
         private void DoCheckGUI()
         {
@@ -423,31 +426,36 @@ namespace StarshipLaunchExpansion.Modules
                 Events["Button1"].guiActive = false;
                 Events["Button2"].guiActive = false;
                 Events["Button3"].guiActive = false;
-				Actions["Action1"].active = false;
-				Actions["Action2"].active = false;
-				Actions["Action3"].active = false;
-				Fields["ExtensionLimit"].guiActiveEditor = false;
+                Actions["Action1"].active = false;
+                Actions["Action2"].active = false;
+                Actions["Action3"].active = false;
+                Fields["ExtensionLimit"].guiActiveEditor = false;
                 Fields["ExtensionSpeed"].guiActiveEditor = false;
                 Fields["ExtendedCurrent"].guiActiveEditor = false;
                 Events["Button1"].guiActiveEditor = false;
                 Events["Button2"].guiActiveEditor = false;
                 Events["Button2"].guiActiveEditor = false;
-				Actions["Action1"].activeEditor = false;
-				Actions["Action2"].activeEditor = false;
-				Actions["Action3"].activeEditor = false;
-			}
+                Actions["Action1"].activeEditor = false;
+                Actions["Action2"].activeEditor = false;
+                Actions["Action3"].activeEditor = false;
+            }
             else if (!ShowSpeedSlider)
             {
                 Fields["ExtensionSpeed"].guiActive = false;
                 Fields["ExtensionSpeed"].guiActiveEditor = false;
             }
+            if (!ShowExtensionSlider)
+            {
+                Fields["ExtensionLimit"].guiActive = false;
+                Fields["ExtensionLimit"].guiActiveEditor = false;
+            }
             Actions["Action1"].guiName = AnimStopName;
             Actions["Action2"].guiName = AnimRetractName;
             Actions["Action3"].guiName = AnimExtendName;
-			Events["Button1"].guiName = AnimStopName;
-			Events["Button2"].guiName = AnimRetractName;
-			Events["Button3"].guiName = AnimExtendName;
-			Fields["ExtensionLimit"].guiName = ExtensionLimitName;
+            Events["Button1"].guiName = AnimStopName;
+            Events["Button2"].guiName = AnimRetractName;
+            Events["Button3"].guiName = AnimExtendName;
+            Fields["ExtensionLimit"].guiName = ExtensionLimitName;
             Fields["ExtensionSpeed"].guiName = ExtensionSpeedName;
             Fields["ExtendedCurrent"].guiName = ExtendedCurrentName;
             Fields["ExtendedCurrent"].guiUnits = UIUnit;
